@@ -991,14 +991,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6375094157987231597}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7a8120ee4cb45c64c90f0fe11a7d0d5e,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3005649344960847792}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7a8120ee4cb45c64c90f0fe11a7d0d5e,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 771141751533874994}
   m_SourcePrefab: {fileID: 100100000, guid: 7a8120ee4cb45c64c90f0fe11a7d0d5e, type: 3}
 --- !u!1 &5063799783453837501 stripped
 GameObject:
@@ -1033,40 +1025,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3005649344960847792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5063799783453837501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56c82175fa62a554c8031da2e052ae62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waterHeight: 0
-  waterDensity: 1.025
-  volumeDisplaced: 12
-  forceVisual: 1
-  forceVisualMaterial: {fileID: 2100000, guid: 140cb39890625594f9e1fa6f363a639b, type: 2}
-  underwater: 0
---- !u!114 &771141751533874994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5063799783453837501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b33f0bc2b78db642a758f07826d0dd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labels:
-  - gate
-  useAutoLabeling: 0
-  autoLabelingSchemeType: 
 --- !u!4 &5552353118786097671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7a8120ee4cb45c64c90f0fe11a7d0d5e,

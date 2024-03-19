@@ -16,15 +16,6 @@ public class BuoyancyForces : MonoBehaviour
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-        
-        if (forceVisual){
-            transform.Find("env_force_visual").gameObject.GetComponent<MeshRenderer>().enabled = true;
-            if (forceVisualMaterial != null){
-                transform.Find("env_force_visual").gameObject.GetComponent<MeshRenderer>().material = forceVisualMaterial;
-            }
-        } else {
-            transform.Find("env_force_visual").gameObject.GetComponent<MeshRenderer>().enabled = false;
-        }
     }
 
     // Update is called once per frame
