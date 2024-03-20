@@ -13,6 +13,10 @@
 # Visual Studio code auto generated files
 .vscode/
 
+# You will have to grab the obj files from the remote server due to their file size.
+Assets/Prefabs/Pool/Assets/Pool.obj
+Assets/Prefabs/Robot/Assets/AUV_2024_Model.obj
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/

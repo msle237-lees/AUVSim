@@ -1,0 +1,9 @@
+#
+# Bunkspeed OBJ Material File
+# http://www.bunkspeed.com
+#
+
+newmtl Light_Grey_Low_Gloss_Paint
+Kd 0.7176471 0.7176471 0.7176471
+Ks 0.5 0.5 0.5
+illum 2

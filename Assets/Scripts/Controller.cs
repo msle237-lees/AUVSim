@@ -33,14 +33,16 @@ public class Controller : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {   
-        Debug.Log("Collision with " + collision.gameObject.tag);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);   
+        if (!collision.gameObject.tag.Equals("Untagged")) {
+            Debug.Log("Collision with " + collision.gameObject.tag);
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);   
+        }
     }
     void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.tag.Equals("Untagged")) {
             Debug.Log("Collision with " + other.gameObject.tag);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
     /**
