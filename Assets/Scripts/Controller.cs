@@ -18,6 +18,8 @@ public class Controller : MonoBehaviour
     public Camera bottomCamera;
     public Camera sceneCamera;
     private int cameraIndex = 0;
+    private float debounceTime = 0.2f; // 200 milliseconds
+    private float lastSwitchTime = 0;
     void Start()
     {
         // Initialize ControllerMapping
@@ -31,20 +33,13 @@ public class Controller : MonoBehaviour
         bottomCamera.enabled = false;
         sceneCamera.enabled = true;
     }
-    void OnCollisionEnter(Collision collision)
-    {   
-        if (!collision.gameObject.tag.Equals("Untagged")) {
-            Debug.Log("Collision with " + collision.gameObject.tag);
-            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);   
-        }
-    }
-    void OnTriggerEnter(Collider other)
-    {
-        if (!other.gameObject.tag.Equals("Untagged")) {
-            Debug.Log("Collision with " + other.gameObject.tag);
-            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-    }
+    // void OnCollisionEnter(Collision collision)
+    // {   
+    //     if (!collision.gameObject.tag.Equals("Untagged")) {
+    //         Debug.Log("Collision with " + collision.gameObject.tag);
+    //         SceneManager.LoadScene(SceneManager.GetActiveScene().name);   
+    //     }
+    // }
     /**
      * @brief Map a value from one range to another.
      */
@@ -69,6 +64,10 @@ public class Controller : MonoBehaviour
         bool B = controllerMapping.B.Newaction.ReadValue<float>() > 0;
         bool Xb = controllerMapping.X.Newaction.ReadValue<float>() > 0;
         bool Yb = controllerMapping.Y.Newaction.ReadValue<float>() > 0;
+        bool DPadUp = controllerMapping.DPadU.Newaction.ReadValue<float>() > 0;
+        bool DPadDown = controllerMapping.DPadD.Newaction.ReadValue<float>() > 0;
+        bool DPadLeft = controllerMapping.DPadL.Newaction.ReadValue<float>() > 0;
+        bool DPadRight = controllerMapping.DPadR.Newaction.ReadValue<float>() > 0;
 
         // Adjusted movement inputs
         X = -RY;
@@ -81,8 +80,8 @@ public class Controller : MonoBehaviour
         // Mapping input values to a specific range for movement
         float min_out = -10.0f;
         float max_out = 10.0f;
-        float min_Z_in = -25.0f;
-        float max_Z_in = 25.0f;
+        float min_Z_in = -100.0f;
+        float max_Z_in = 100.0f;
         float min_1_out = -0.75f;
         float max_1_out = 0.75f;
         float min_in = -1.0f;
@@ -109,41 +108,52 @@ public class Controller : MonoBehaviour
         rb.AddTorque(localTorque, ForceMode.Force);
 
         // Debug output
-        // Debug.Log($"X: {X} Y: {Y} Z: {Z} Roll: {Roll} Pitch: {Pitch} Yaw: {Yaw} Torp1: {Torp1} Torp2: {Torp2}");
+        Debug.Log($"X: {X} Y: {Y} Z: {Z} Roll: {Roll} Pitch: {Pitch} Yaw: {Yaw} Torp1: {Torp1} Torp2: {Torp2} A: {A} B: {B} X: {Xb} Y: {Yb} DPadUp: {DPadUp} DPadDown: {DPadDown} localForce: {localForce} localTorque: {localTorque} cameraIndex: {cameraIndex}");
 
-        if (Xb) {
-            if (cameraIndex == 0) {
-                frontRightCamera.enabled = true;
-                frontLeftCamera.enabled = false;
-                bottomCamera.enabled = false;
-                sceneCamera.enabled = false;
-                cameraIndex = 1;
+        if (Time.time - lastSwitchTime > debounceTime) {
+            if (DPadUp) {
+                cameraIndex += 1;
+                lastSwitchTime = Time.time;
             }
-            else if (cameraIndex == 1) {
-                frontRightCamera.enabled = false;
-                frontLeftCamera.enabled = true;
-                bottomCamera.enabled = false;
-                sceneCamera.enabled = false;
-                cameraIndex = 2;
-            }
-            else if (cameraIndex == 2) {
-                frontRightCamera.enabled = false;
-                frontLeftCamera.enabled = false;
-                bottomCamera.enabled = true;
-                sceneCamera.enabled = false;
-                cameraIndex = 3;
-            }
-            else if (cameraIndex == 3) {
-                frontRightCamera.enabled = false;
-                frontLeftCamera.enabled = false;
-                bottomCamera.enabled = false;
-                sceneCamera.enabled = true;
-                cameraIndex = 0;
-            
+            else if (DPadDown) {
+                cameraIndex -= 1;
+                lastSwitchTime = Time.time;
             }
         }
-        if (Yb) {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (cameraIndex < 0) {
+            cameraIndex = 0;
+        }
+        else if (cameraIndex > 3) {
+            cameraIndex = 3;
+        }
+        if (cameraIndex == 0) {
+            frontRightCamera.enabled = false;
+            frontLeftCamera.enabled = false;
+            bottomCamera.enabled = false;
+            sceneCamera.enabled = true;
+        }
+        else if (cameraIndex == 1) {
+            frontRightCamera.enabled = true;
+            frontLeftCamera.enabled = false;
+            bottomCamera.enabled = false;
+            sceneCamera.enabled = false;
+        }
+        else if (cameraIndex == 2) {
+            frontRightCamera.enabled = false;
+            frontLeftCamera.enabled = true;
+            bottomCamera.enabled = false;
+            sceneCamera.enabled = false;
+        }
+        else if (cameraIndex == 3) {
+            frontRightCamera.enabled = false;
+            frontLeftCamera.enabled = false;
+            bottomCamera.enabled = true;
+            sceneCamera.enabled = false;        
+        }
+        if (Time.time - lastSwitchTime > debounceTime) {
+            if (Yb) {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
     }
 

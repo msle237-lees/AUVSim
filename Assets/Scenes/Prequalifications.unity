@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 180.87221, g: 192.94876, b: 282.8882, a: 1}
+  m_IndirectSpecularColor: {r: 180.1935, g: 191.73195, b: 279.91702, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1577,30 +1577,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointCounter: {fileID: 0}
---- !u!1 &1243234425 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8448784007380238319, guid: 372ea2e0e7a4a474490c3d25f99e9976,
-    type: 3}
-  m_PrefabInstance: {fileID: 1850057849}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1243234431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1243234425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56c82175fa62a554c8031da2e052ae62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waterHeight: 10
-  waterDensity: 1.025
-  volumeDisplaced: 32
-  forceVisual: 1
-  forceVisualMaterial: {fileID: 0}
-  underwater: 0
 --- !u!1 &1477797279
 GameObject:
   m_ObjectHideFlags: 0
@@ -2054,6 +2030,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8821370241684955380, guid: 372ea2e0e7a4a474490c3d25f99e9976,
+        type: 3}
+      propertyPath: waterHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8821370241684955380, guid: 372ea2e0e7a4a474490c3d25f99e9976,
+        type: 3}
+      propertyPath: volumeDisplaced
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971258358752924170, guid: 372ea2e0e7a4a474490c3d25f99e9976,
+        type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8971258358752924170, guid: 372ea2e0e7a4a474490c3d25f99e9976,
         type: 3}
       propertyPath: m_Mass
@@ -2067,11 +2058,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8448784007380238319, guid: 372ea2e0e7a4a474490c3d25f99e9976,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1243234431}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 372ea2e0e7a4a474490c3d25f99e9976, type: 3}
 --- !u!1 &1883048118
 GameObject:

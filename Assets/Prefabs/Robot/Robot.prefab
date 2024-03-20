@@ -1138,6 +1138,8 @@ GameObject:
   - component: {fileID: 8730925932100581245}
   - component: {fileID: 8971258358752924170}
   - component: {fileID: 7020916818239305269}
+  - component: {fileID: 8821370241684955380}
+  - component: {fileID: 3117121145929826990}
   m_Layer: 0
   m_Name: Robot
   m_TagString: Untagged
@@ -1211,6 +1213,46 @@ MonoBehaviour:
   frontLeftCamera: {fileID: 5987405036751383725}
   bottomCamera: {fileID: 28626842788658254}
   sceneCamera: {fileID: 4949267322125105636}
+--- !u!114 &8821370241684955380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8448784007380238319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56c82175fa62a554c8031da2e052ae62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterHeight: 10
+  waterDensity: 1.025
+  volumeDisplaced: 1000
+  forceVisual: 1
+  forceVisualMaterial: {fileID: 0}
+  underwater: 0
+--- !u!64 &3117121145929826990
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8448784007380238319}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2432090755550338912, guid: 95f36618c56ae1d4894748280bbeb221, type: 3}
 --- !u!1 &8893560440280836520
 GameObject:
   m_ObjectHideFlags: 0
