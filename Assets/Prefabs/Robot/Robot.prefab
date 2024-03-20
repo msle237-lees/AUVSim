@@ -1139,7 +1139,7 @@ GameObject:
   - component: {fileID: 8971258358752924170}
   - component: {fileID: 7020916818239305269}
   - component: {fileID: 8821370241684955380}
-  - component: {fileID: 3117121145929826990}
+  - component: {fileID: 3260934954733949648}
   m_Layer: 0
   m_Name: Robot
   m_TagString: Untagged
@@ -1231,8 +1231,8 @@ MonoBehaviour:
   forceVisual: 1
   forceVisualMaterial: {fileID: 0}
   underwater: 0
---- !u!64 &3117121145929826990
-MeshCollider:
+--- !u!65 &3260934954733949648
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1249,10 +1249,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 1
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 95f36618c56ae1d4894748280bbeb221, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 7.7329865, y: 3.3367462, z: 5.9589586}
+  m_Center: {x: -2.409752, y: 30.260113, z: 3.2023354}
 --- !u!1 &8893560440280836520
 GameObject:
   m_ObjectHideFlags: 0

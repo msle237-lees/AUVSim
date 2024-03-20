@@ -20,6 +20,11 @@ public class Controller : MonoBehaviour
     private int cameraIndex = 0;
     private float debounceTime = 0.2f; // 200 milliseconds
     private float lastSwitchTime = 0;
+    public GameObject coin_0, coin_1, coin_2, coin_3, coin_4, coin_5, coin_6, coin_7, coin_8;
+    public GameObject gate;
+    public GameObject Qualification_Pole;
+    public TMPro.TextMeshProUGUI scoreText;
+    private int score = 0;
     void Start()
     {
         // Initialize ControllerMapping
@@ -32,14 +37,76 @@ public class Controller : MonoBehaviour
         frontLeftCamera.enabled = false;
         bottomCamera.enabled = false;
         sceneCamera.enabled = true;
+        scoreText.text = score.ToString();
+
+        coin_0.SetActive(true);
+        coin_1.SetActive(false);
+        coin_2.SetActive(false);
+        coin_3.SetActive(false);
+        coin_4.SetActive(false);
+        coin_5.SetActive(false);
+        coin_6.SetActive(false);
+        coin_7.SetActive(false);
+        coin_8.SetActive(false);
     }
-    // void OnCollisionEnter(Collision collision)
-    // {   
-    //     if (!collision.gameObject.tag.Equals("Untagged")) {
-    //         Debug.Log("Collision with " + collision.gameObject.tag);
-    //         SceneManager.LoadScene(SceneManager.GetActiveScene().name);   
-    //     }
-    // }
+    void OnCollisionEnter(Collision collision)
+    {   
+        if (collision.gameObject == gate || collision.gameObject == Qualification_Pole) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else if (collision.gameObject == coin_0) {
+            coin_0.SetActive(false);
+            coin_1.SetActive(true);
+            score += 1;
+            scoreText.text = score.ToString();
+        }
+        else if (collision.gameObject == coin_1) {
+            coin_1.SetActive(false);
+            coin_2.SetActive(true);
+            score += 1;
+            scoreText.text = score.ToString();
+        }
+        else if (collision.gameObject == coin_2) {
+            coin_2.SetActive(false);
+            coin_3.SetActive(true);
+            score += 1;
+            scoreText.text = score.ToString();
+        }
+        else if (collision.gameObject == coin_3) {
+            coin_3.SetActive(false);
+            coin_4.SetActive(true);
+            score += 1;
+            scoreText.text = score.ToString();
+        }
+        else if (collision.gameObject == coin_4) {
+            coin_4.SetActive(false);
+            coin_5.SetActive(true);
+            score += 1;
+            scoreText.text = score.ToString();
+        }
+        else if (collision.gameObject == coin_5) {
+            coin_5.SetActive(false);
+            coin_6.SetActive(true);
+            score += 1;
+            scoreText.text = score.ToString();
+        }
+        else if (collision.gameObject == coin_6) {
+            coin_6.SetActive(false);
+            coin_7.SetActive(true);
+            score += 1;
+            scoreText.text = score.ToString();
+        }
+        else if (collision.gameObject == coin_7) {
+            coin_7.SetActive(false);
+            coin_8.SetActive(true);
+            score += 1;
+            scoreText.text = score.ToString();
+        }
+        else if (collision.gameObject == coin_8) {
+            coin_8.SetActive(false);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
     /**
      * @brief Map a value from one range to another.
      */
@@ -80,8 +147,8 @@ public class Controller : MonoBehaviour
         // Mapping input values to a specific range for movement
         float min_out = -10.0f;
         float max_out = 10.0f;
-        float min_Z_in = -100.0f;
-        float max_Z_in = 100.0f;
+        float min_Z_in = -25.0f;
+        float max_Z_in = 25.0f;
         float min_1_out = -0.75f;
         float max_1_out = 0.75f;
         float min_in = -1.0f;
