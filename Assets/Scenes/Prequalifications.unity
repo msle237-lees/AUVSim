@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 181.88747, g: 195.12723, b: 288.7266, a: 1}
+  m_IndirectSpecularColor: {r: 180.39247, g: 192.0662, b: 280.64554, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -595,7 +595,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -956,7 +956,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -1062,7 +1062,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -1186,7 +1186,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -1292,7 +1292,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -1391,6 +1391,26 @@ PrefabInstance:
         type: 3}
       propertyPath: cpuSimulation
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811298268633654883, guid: 5029619a9c91fa64ab7b538e774ec231,
+        type: 3}
+      propertyPath: absorptionDistance
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811298268633654883, guid: 5029619a9c91fa64ab7b538e774ec231,
+        type: 3}
+      propertyPath: smoothnessFadeStart
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811298268633654883, guid: 5029619a9c91fa64ab7b538e774ec231,
+        type: 3}
+      propertyPath: maxRefractionDistance
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811298268633654883, guid: 5029619a9c91fa64ab7b538e774ec231,
+        type: 3}
+      propertyPath: smoothnessFadeDistance
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 7773933385409104154, guid: 5029619a9c91fa64ab7b538e774ec231,
         type: 3}
@@ -1501,7 +1521,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -1607,7 +1627,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -1719,7 +1739,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -1825,7 +1845,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -1878,12 +1898,12 @@ PrefabInstance:
     - target: {fileID: 4205655266983286123, guid: 372ea2e0e7a4a474490c3d25f99e9976,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -232.3
+      value: -132.7
       objectReference: {fileID: 0}
     - target: {fileID: 4205655266983286123, guid: 372ea2e0e7a4a474490c3d25f99e9976,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -172
+      value: -69.7
       objectReference: {fileID: 0}
     - target: {fileID: 4510239310271666653, guid: 372ea2e0e7a4a474490c3d25f99e9976,
         type: 3}
@@ -1983,7 +2003,7 @@ PrefabInstance:
     - target: {fileID: 8730925932100581245, guid: 372ea2e0e7a4a474490c3d25f99e9976,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 8.91
       objectReference: {fileID: 0}
     - target: {fileID: 8730925932100581245, guid: 372ea2e0e7a4a474490c3d25f99e9976,
         type: 3}
@@ -2066,7 +2086,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6697870158374242524, guid: 372ea2e0e7a4a474490c3d25f99e9976, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 372ea2e0e7a4a474490c3d25f99e9976, type: 3}
