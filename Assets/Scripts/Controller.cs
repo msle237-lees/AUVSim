@@ -198,19 +198,7 @@ public class Controller : MonoBehaviour
     void NetworkControl()
     {
         // Placeholder for remote control
-        // StartCoroutine(getData(url));
-    }
-    void FixedUpdate()
-    {
-        if (!remoteControl)
-        {
-            ControllerControl();
-        }
-        else
-        {
-            // Placeholder for remote control
-            NetworkControl();
-        }
+        StartCoroutine(getData(url));
     }
     /**
      * @brief Map a value from one range to another.
@@ -227,67 +215,47 @@ public class Controller : MonoBehaviour
     {
         if (Time.time - lastSwitchTime > debounceTime)
         {
-            if (other.gameObject == coin_0)
+            switch (other.gameObject)
             {
-                coin_0.SetActive(false);
-                coin_1.SetActive(true);
-                score += 1;
-                scoreText.text = score.ToString();
+                case var _ when other.gameObject == coin_0:
+                    coin_0.SetActive(false);
+                    coin_1.SetActive(true);
+                    break;
+                case var _ when other.gameObject == coin_1:
+                    coin_1.SetActive(false);
+                    coin_2.SetActive(true);
+                    break;
+                case var _ when other.gameObject == coin_2:
+                    coin_2.SetActive(false);
+                    coin_3.SetActive(true);
+                    break;
+                case var _ when other.gameObject == coin_3:
+                    coin_3.SetActive(false);
+                    coin_4.SetActive(true);
+                    break;
+                case var _ when other.gameObject == coin_4:
+                    coin_4.SetActive(false);
+                    coin_5.SetActive(true);
+                    break;
+                case var _ when other.gameObject == coin_5:
+                    coin_5.SetActive(false);
+                    coin_6.SetActive(true);
+                    break;
+                case var _ when other.gameObject == coin_6:
+                    coin_6.SetActive(false);
+                    coin_7.SetActive(true);
+                    break;
+                case var _ when other.gameObject == coin_7:
+                    coin_7.SetActive(false);
+                    coin_8.SetActive(true);
+                    break;
+                case var _ when other.gameObject == coin_8:
+                    coin_8.SetActive(false);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    break;
             }
-            else if (other.gameObject == coin_1)
-            {
-                coin_1.SetActive(false);
-                coin_2.SetActive(true);
-                score += 1;
-                scoreText.text = score.ToString();
-            }
-            else if (other.gameObject == coin_2)
-            {
-                coin_2.SetActive(false);
-                coin_3.SetActive(true);
-                score += 1;
-                scoreText.text = score.ToString();
-            }
-            else if (other.gameObject == coin_3)
-            {
-                coin_3.SetActive(false);
-                coin_4.SetActive(true);
-                score += 1;
-                scoreText.text = score.ToString();
-            }
-            else if (other.gameObject == coin_4)
-            {
-                coin_4.SetActive(false);
-                coin_5.SetActive(true);
-                score += 1;
-                scoreText.text = score.ToString();
-            }
-            else if (other.gameObject == coin_5)
-            {
-                coin_5.SetActive(false);
-                coin_6.SetActive(true);
-                score += 1;
-                scoreText.text = score.ToString();
-            }
-            else if (other.gameObject == coin_6)
-            {
-                coin_6.SetActive(false);
-                coin_7.SetActive(true);
-                score += 1;
-                scoreText.text = score.ToString();
-            }
-            else if (other.gameObject == coin_7)
-            {
-                coin_7.SetActive(false);
-                coin_8.SetActive(true);
-                score += 1;
-                scoreText.text = score.ToString();
-            }
-            else if (other.gameObject == coin_8)
-            {
-                coin_8.SetActive(false);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
+            score += 1;
+            scoreText.text = score.ToString();
         }
     }
     // HTTP functions
@@ -323,6 +291,18 @@ public class Controller : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
+    }
+    void FixedUpdate()
+    {
+        if (!remoteControl)
+        {
+            ControllerControl();
+        }
+        else
+        {
+            // Placeholder for remote control
+            NetworkControl();
+        }
     }
 }
 
