@@ -1,19 +1,17 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using System.Runtime.InteropServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
+using System.Threading;
+using System.Net.Sockets;
+using System.Net;
+using System.Text;
 
 public class Controller : MonoBehaviour
 {
-    public bool remoteControl = false;
+    public bool remoteControl = true;
     private ControllerMapping controllerMapping;
     private float X, Y, Z, Roll, Pitch, Yaw;
-    private bool Torp1, Torp2;
+    private bool Torp1, Torp2, Claw, Reset;
     public Rigidbody rb;
     public Vector3 Com; // Center of Mass object
     public Camera frontRightCamera;
@@ -23,22 +21,17 @@ public class Controller : MonoBehaviour
     private int cameraIndex = 0;
     private float debounceTime = 0.2f; // 200 milliseconds
     private float lastSwitchTime = 0;
-    public GameObject coin_0, coin_1, coin_2, coin_3, coin_4, coin_5, coin_6, coin_7, coin_8;
     public GameObject gate;
     public GameObject Qualification_Pole;
     public TMPro.TextMeshProUGUI scoreText;
     private int score = 0;
-    private string url = "http://localhost:5000";
-    public GameObject motor_1;
-    public GameObject motor_2;
-    public GameObject motor_3;
-    public GameObject motor_4;
-    public GameObject motor_5;
-    public GameObject motor_6;
-    public GameObject motor_7;
-    public GameObject motor_8;
-    private GameObject[] horizontalMotors;
-    private GameObject[] verticalMotors;
+    private float distanceToGate;
+    private float distanceToPole;
+    Thread thread;
+    public int connectionPort = 50001;
+    TcpListener listener;
+    TcpClient client;
+    bool running;
     void Start()
     {
         if (!remoteControl)
@@ -50,11 +43,8 @@ public class Controller : MonoBehaviour
         else
         {
             // Placeholder for remote control initialization
+            StartServer();
         }
-
-        horizontalMotors = new GameObject[] { motor_1, motor_2, motor_3, motor_4 };
-        verticalMotors = new GameObject[] { motor_5, motor_6, motor_7, motor_8 };
-
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = Com;
         frontRightCamera.enabled = false;
@@ -62,16 +52,15 @@ public class Controller : MonoBehaviour
         bottomCamera.enabled = false;
         sceneCamera.enabled = true;
         scoreText.text = score.ToString();
-
-        coin_0.SetActive(true);
-        coin_1.SetActive(false);
-        coin_2.SetActive(false);
-        coin_3.SetActive(false);
-        coin_4.SetActive(false);
-        coin_5.SetActive(false);
-        coin_6.SetActive(false);
-        coin_7.SetActive(false);
-        coin_8.SetActive(false);
+    }
+    String distanceMeasurement()
+    {
+        GameObject obj = gate;
+        GameObject obj2 = Qualification_Pole;
+        distanceToGate = Vector3.Distance(transform.position, obj.transform.position) / 10.0f;
+        distanceToPole = Vector3.Distance(transform.position, obj2.transform.position) / 10.0f;
+        Debug.Log($"Distance to Gate: {distanceToGate} Distance to Pole: {distanceToPole}");
+        return $"{distanceToGate},{distanceToPole}";
     }
     void ControllerControl()
     {
@@ -136,7 +125,7 @@ public class Controller : MonoBehaviour
         rb.AddTorque(localTorque, ForceMode.Force);
 
         // Debug output
-        Debug.Log($"X: {X} Y: {Y} Z: {Z} Roll: {Roll} Pitch: {Pitch} Yaw: {Yaw} Torp1: {Torp1} Torp2: {Torp2} A: {A} B: {B} X: {Xb} Y: {Yb} DPadUp: {DPadUp} DPadDown: {DPadDown} localForce: {localForce} localTorque: {localTorque} cameraIndex: {cameraIndex}");
+        // Debug.Log($"X: {X} Y: {Y} Z: {Z} Roll: {Roll} Pitch: {Pitch} Yaw: {Yaw} Torp1: {Torp1} Torp2: {Torp2} A: {A} B: {B} X: {Xb} Y: {Yb} DPadUp: {DPadUp} DPadDown: {DPadDown} localForce: {localForce} localTorque: {localTorque} cameraIndex: {cameraIndex}");
 
         if (Time.time - lastSwitchTime > debounceTime)
         {
@@ -194,15 +183,11 @@ public class Controller : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
+        if (Time.time - lastSwitchTime > debounceTime)
+        {
+            DataGenerator();
+        }
     }
-    void NetworkControl()
-    {
-        // Placeholder for remote control
-        StartCoroutine(getData(url));
-    }
-    /**
-     * @brief Map a value from one range to another.
-     */
     public int Map(float x, float in_min, float in_max, float out_min, float out_max)
     {
         // Perform the mapping from one range to another as a float.
@@ -210,79 +195,6 @@ public class Controller : MonoBehaviour
 
         // Round the result to the nearest whole number and then cast to int.
         return (int)Math.Round(mappedValue);
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (Time.time - lastSwitchTime > debounceTime)
-        {
-            switch (other.gameObject)
-            {
-                case var _ when other.gameObject == coin_0:
-                    coin_0.SetActive(false);
-                    coin_1.SetActive(true);
-                    break;
-                case var _ when other.gameObject == coin_1:
-                    coin_1.SetActive(false);
-                    coin_2.SetActive(true);
-                    break;
-                case var _ when other.gameObject == coin_2:
-                    coin_2.SetActive(false);
-                    coin_3.SetActive(true);
-                    break;
-                case var _ when other.gameObject == coin_3:
-                    coin_3.SetActive(false);
-                    coin_4.SetActive(true);
-                    break;
-                case var _ when other.gameObject == coin_4:
-                    coin_4.SetActive(false);
-                    coin_5.SetActive(true);
-                    break;
-                case var _ when other.gameObject == coin_5:
-                    coin_5.SetActive(false);
-                    coin_6.SetActive(true);
-                    break;
-                case var _ when other.gameObject == coin_6:
-                    coin_6.SetActive(false);
-                    coin_7.SetActive(true);
-                    break;
-                case var _ when other.gameObject == coin_7:
-                    coin_7.SetActive(false);
-                    coin_8.SetActive(true);
-                    break;
-                case var _ when other.gameObject == coin_8:
-                    coin_8.SetActive(false);
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                    break;
-            }
-            score += 1;
-            scoreText.text = score.ToString();
-        }
-    }
-    // HTTP functions
-    IEnumerator getData(string url)
-    {
-        UnityWebRequest uwr = UnityWebRequest.Get(url);
-        yield return uwr.SendWebRequest();
-
-        if (uwr.result == UnityWebRequest.Result.ConnectionError)
-        {
-            Debug.Log("Error While Sending: " + uwr.error);
-        }
-        else
-        {
-            Debug.Log("Received: " + uwr.downloadHandler.text);
-        }
-    }
-    private void postData(string url, string sensor_data, int[][] img1, int[][] img2, int[][] img3)
-    {
-        // Create a posting method to send three images to the server
-        // UnityWebRequest uwr = new UnityWebRequest(url, "POST");
-        // byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(sensor_data);
-    }
-    void ProcessTCPData()
-    {
-        // TCP data processing placeholder
-        Debug.Log("Processing TCP Data...");
     }
     void OnCollisionEnter(Collision collision)
     {
@@ -292,16 +204,167 @@ public class Controller : MonoBehaviour
         }
 
     }
+    void StartServer()
+    {
+        ThreadStart ts = new ThreadStart(GetData);
+        thread = new Thread(ts);
+        thread.Start();
+        Debug.Log("Server started");
+    }
+    void GetData()
+    {
+        listener = new TcpListener(IPAddress.Any, connectionPort);
+        listener.Start();
+
+        client = listener.AcceptTcpClient();
+
+        running = true;
+        while (running)
+        {
+            Connection();
+        }
+        client.Close();
+        listener.Stop();
+    }
+    void Connection()
+    {
+        NetworkStream nwStream = client.GetStream();
+        byte[] buffer = new byte[client.ReceiveBufferSize];
+        int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
+
+        string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+        byte[] dataBytes = Encoding.UTF8.GetBytes(dataReceived);
+        string data;
+        if (dataReceived != null && dataReceived != "")
+        {
+            // Remove any trailing newline characters and characters that are not part of the data
+            dataReceived = dataReceived.Replace("\n", "").Replace("\r", "").Replace("\0", "");
+            Debug.Log(dataReceived);
+            UpdateData(dataReceived);
+            if (Time.time - lastSwitchTime > debounceTime)
+            {
+                data = DataGenerator();
+                dataBytes = Encoding.UTF8.GetBytes(data);
+            }
+            nwStream.Write(dataBytes, 0, bytesRead);
+        }
+    }
+    void UpdateData(string data)
+    {
+        string[] values = data.Split(',');
+        if (values.Length == 10)
+        {
+            X = float.Parse(values[0]);
+            Y = float.Parse(values[1]);
+            Z = float.Parse(values[2]);
+            Roll = float.Parse(values[3]);
+            Pitch = float.Parse(values[4]);
+            Yaw = float.Parse(values[5]);
+            Torp1 = bool.Parse(values[6]);
+            Torp2 = bool.Parse(values[7]);
+            Claw = bool.Parse(values[8]);
+            Reset = bool.Parse(values[8]);
+            
+            // Mapping input values to a specific range for movement
+            float min_out = -10.0f;
+            float max_out = 10.0f;
+            float min_Z_in = -25.0f;
+            float max_Z_in = 25.0f;
+            float min_1_out = -0.75f;
+            float max_1_out = 0.75f;
+            float min_in = -1.0f;
+            float max_in = 1.0f;
+
+            // Apply input mapping
+            X = Map(X, min_in, max_in, min_out, max_out);
+            Y = Map(Y, min_in, max_in, min_out, max_out);
+            Z = Map(Z, min_in, max_in, min_Z_in, max_Z_in);
+            Yaw = Map(Yaw, min_in, max_in, min_1_out, max_1_out);
+
+            Yaw = -Yaw; // Invert Yaw
+
+            // Add a ceiling to the Y axis based on player location
+            if (rb.transform.position.y > 10.0f)
+            {
+                Z = Mathf.Min(Z, 0.0f);
+            }
+
+            // Direction and magnitude of force to apply, in local space
+            Vector3 forceDirection = new Vector3(X, Z, Y);
+            Vector3 torqueDirection = new Vector3(0, Yaw, 0); // Adjust for local space orientation
+
+            // Convert forceDirection and torqueDirection to be relative to the rigidbody's orientation
+            Vector3 localForce = rb.transform.TransformDirection(forceDirection);
+            Vector3 localTorque = rb.transform.TransformDirection(torqueDirection);
+
+            // Apply forces and torques to the rigidbody in local space
+            rb.AddForce(localForce, ForceMode.Force);
+            rb.AddTorque(localTorque, ForceMode.Force);
+
+            if (Time.time - lastSwitchTime > debounceTime)
+            {
+                if (Reset)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }
+            }
+        }
+    }
+    // IMU / Accel / Temp / Image data generator
+    String DataGenerator()
+    {
+        float XAccelLast = 0.0f;
+        float YAccelLast = 0.0f;
+        float ZAccelLast = 0.0f;
+        float XGyroLast = 0.0f;
+        float YGyroLast = 0.0f;
+        float ZGyroLast = 0.0f;
+
+        float XAccel = (rb.transform.position.x - XAccelLast) / Time.deltaTime;
+        float YAccel = (rb.transform.position.y - YAccelLast) / Time.deltaTime;
+        float ZAccel = (rb.transform.position.z - ZAccelLast) / Time.deltaTime;
+        float XGyro = (rb.transform.rotation.x - XGyroLast) / Time.deltaTime;
+        float YGyro = (rb.transform.rotation.y - YGyroLast) / Time.deltaTime;
+        float ZGyro = (rb.transform.rotation.z - ZGyroLast) / Time.deltaTime;
+
+        // Get image data for front right camera
+        RenderTexture frontCameraTexture = frontRightCamera.targetTexture;
+        RenderTexture.active = frontCameraTexture;
+        Texture2D frontCameraTexture2D = new Texture2D(frontCameraTexture.width, frontCameraTexture.height);
+        frontCameraTexture2D.ReadPixels(new Rect(0, 0, frontCameraTexture.width, frontCameraTexture.height), 0, 0);
+        frontCameraTexture2D.Apply();
+        byte[] frontCameraBytes = frontCameraTexture2D.EncodeToPNG();
+        string frontCameraBase64 = Convert.ToBase64String(frontCameraBytes);
+
+        // Get image data for front left camera
+        RenderTexture frontLeftCameraTexture = frontLeftCamera.targetTexture;
+        RenderTexture.active = frontLeftCameraTexture;
+        Texture2D frontLeftCameraTexture2D = new Texture2D(frontLeftCameraTexture.width, frontLeftCameraTexture.height);
+        frontLeftCameraTexture2D.ReadPixels(new Rect(0, 0, frontLeftCameraTexture.width, frontLeftCameraTexture.height), 0, 0);
+        frontLeftCameraTexture2D.Apply();
+        byte[] frontLeftCameraBytes = frontLeftCameraTexture2D.EncodeToPNG();
+        string frontLeftCameraBase64 = Convert.ToBase64String(frontLeftCameraBytes);
+
+        // Get image data for bottom camera
+        RenderTexture bottomCameraTexture = bottomCamera.targetTexture;
+        RenderTexture.active = bottomCameraTexture;
+        Texture2D bottomCameraTexture2D = new Texture2D(bottomCameraTexture.width, bottomCameraTexture.height);
+        bottomCameraTexture2D.ReadPixels(new Rect(0, 0, bottomCameraTexture.width, bottomCameraTexture.height), 0, 0);
+        bottomCameraTexture2D.Apply();
+        byte[] bottomCameraBytes = bottomCameraTexture2D.EncodeToPNG();
+        string bottomCameraBase64 = Convert.ToBase64String(bottomCameraBytes);
+
+        // Get Distance to Gate and Pole
+        string distance = distanceMeasurement();
+        // Join all data into a single string
+        string data = $"{XAccel},{YAccel},{ZAccel},{XGyro},{YGyro},{ZGyro},{frontCameraBase64},{frontLeftCameraBase64},{bottomCameraBase64},{distance}";
+        return data;
+    }
     void FixedUpdate()
     {
         if (!remoteControl)
         {
             ControllerControl();
-        }
-        else
-        {
-            // Placeholder for remote control
-            NetworkControl();
         }
     }
 }
