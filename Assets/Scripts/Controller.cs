@@ -23,44 +23,20 @@ public class Controller : MonoBehaviour
     private float lastSwitchTime = 0;
     public GameObject gate;
     public GameObject Qualification_Pole;
-    public TMPro.TextMeshProUGUI scoreText;
-    private int score = 0;
-    private float distanceToGate;
-    private float distanceToPole;
     Thread thread;
     public int connectionPort = 50001;
-    TcpListener listener;
-    TcpClient client;
-    bool running;
     void Start()
     {
-        if (!remoteControl)
-        {
-            // Initialize ControllerMapping
-            controllerMapping = new ControllerMapping();
-            controllerMapping.Enable(); // Make sure to enable the actions
-        }
-        else
-        {
-            // Placeholder for remote control initialization
-            StartServer();
-        }
+        // Initialize ControllerMapping
+        controllerMapping = new ControllerMapping();
+        controllerMapping.Enable(); // Make sure to enable the actions
+
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = Com;
         frontRightCamera.enabled = false;
         frontLeftCamera.enabled = false;
         bottomCamera.enabled = false;
         sceneCamera.enabled = true;
-        scoreText.text = score.ToString();
-    }
-    String distanceMeasurement()
-    {
-        GameObject obj = gate;
-        GameObject obj2 = Qualification_Pole;
-        distanceToGate = Vector3.Distance(transform.position, obj.transform.position) / 10.0f;
-        distanceToPole = Vector3.Distance(transform.position, obj2.transform.position) / 10.0f;
-        Debug.Log($"Distance to Gate: {distanceToGate} Distance to Pole: {distanceToPole}");
-        return $"{distanceToGate},{distanceToPole}";
     }
     void ControllerControl()
     {
@@ -183,10 +159,6 @@ public class Controller : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
-        if (Time.time - lastSwitchTime > debounceTime)
-        {
-            DataGenerator();
-        }
     }
     public int Map(float x, float in_min, float in_max, float out_min, float out_max)
     {
@@ -203,51 +175,6 @@ public class Controller : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-    }
-    void StartServer()
-    {
-        ThreadStart ts = new ThreadStart(GetData);
-        thread = new Thread(ts);
-        thread.Start();
-        Debug.Log("Server started");
-    }
-    void GetData()
-    {
-        listener = new TcpListener(IPAddress.Any, connectionPort);
-        listener.Start();
-
-        client = listener.AcceptTcpClient();
-
-        running = true;
-        while (running)
-        {
-            Connection();
-        }
-        client.Close();
-        listener.Stop();
-    }
-    void Connection()
-    {
-        NetworkStream nwStream = client.GetStream();
-        byte[] buffer = new byte[client.ReceiveBufferSize];
-        int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize);
-
-        string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-        byte[] dataBytes = Encoding.UTF8.GetBytes(dataReceived);
-        string data;
-        if (dataReceived != null && dataReceived != "")
-        {
-            // Remove any trailing newline characters and characters that are not part of the data
-            dataReceived = dataReceived.Replace("\n", "").Replace("\r", "").Replace("\0", "");
-            Debug.Log(dataReceived);
-            UpdateData(dataReceived);
-            if (Time.time - lastSwitchTime > debounceTime)
-            {
-                data = DataGenerator();
-                dataBytes = Encoding.UTF8.GetBytes(data);
-            }
-            nwStream.Write(dataBytes, 0, bytesRead);
-        }
     }
     void UpdateData(string data)
     {
@@ -310,64 +237,8 @@ public class Controller : MonoBehaviour
             }
         }
     }
-    // IMU / Accel / Temp / Image data generator
-    String DataGenerator()
-    {
-        float XAccelLast = 0.0f;
-        float YAccelLast = 0.0f;
-        float ZAccelLast = 0.0f;
-        float XGyroLast = 0.0f;
-        float YGyroLast = 0.0f;
-        float ZGyroLast = 0.0f;
-
-        float XAccel = (rb.transform.position.x - XAccelLast) / Time.deltaTime;
-        float YAccel = (rb.transform.position.y - YAccelLast) / Time.deltaTime;
-        float ZAccel = (rb.transform.position.z - ZAccelLast) / Time.deltaTime;
-        float XGyro = (rb.transform.rotation.x - XGyroLast) / Time.deltaTime;
-        float YGyro = (rb.transform.rotation.y - YGyroLast) / Time.deltaTime;
-        float ZGyro = (rb.transform.rotation.z - ZGyroLast) / Time.deltaTime;
-
-        // Get image data for front right camera
-        RenderTexture frontCameraTexture = frontRightCamera.targetTexture;
-        RenderTexture.active = frontCameraTexture;
-        Texture2D frontCameraTexture2D = new Texture2D(frontCameraTexture.width, frontCameraTexture.height);
-        frontCameraTexture2D.ReadPixels(new Rect(0, 0, frontCameraTexture.width, frontCameraTexture.height), 0, 0);
-        frontCameraTexture2D.Apply();
-        byte[] frontCameraBytes = frontCameraTexture2D.EncodeToPNG();
-        string frontCameraBase64 = Convert.ToBase64String(frontCameraBytes);
-
-        // Get image data for front left camera
-        RenderTexture frontLeftCameraTexture = frontLeftCamera.targetTexture;
-        RenderTexture.active = frontLeftCameraTexture;
-        Texture2D frontLeftCameraTexture2D = new Texture2D(frontLeftCameraTexture.width, frontLeftCameraTexture.height);
-        frontLeftCameraTexture2D.ReadPixels(new Rect(0, 0, frontLeftCameraTexture.width, frontLeftCameraTexture.height), 0, 0);
-        frontLeftCameraTexture2D.Apply();
-        byte[] frontLeftCameraBytes = frontLeftCameraTexture2D.EncodeToPNG();
-        string frontLeftCameraBase64 = Convert.ToBase64String(frontLeftCameraBytes);
-
-        // Get image data for bottom camera
-        RenderTexture bottomCameraTexture = bottomCamera.targetTexture;
-        RenderTexture.active = bottomCameraTexture;
-        Texture2D bottomCameraTexture2D = new Texture2D(bottomCameraTexture.width, bottomCameraTexture.height);
-        bottomCameraTexture2D.ReadPixels(new Rect(0, 0, bottomCameraTexture.width, bottomCameraTexture.height), 0, 0);
-        bottomCameraTexture2D.Apply();
-        byte[] bottomCameraBytes = bottomCameraTexture2D.EncodeToPNG();
-        string bottomCameraBase64 = Convert.ToBase64String(bottomCameraBytes);
-
-        // Get Distance to Gate and Pole
-        string distance = distanceMeasurement();
-        // Join all data into a single string
-        string data = $"{XAccel},{YAccel},{ZAccel},{XGyro},{YGyro},{ZGyro},{frontCameraBase64},{frontLeftCameraBase64},{bottomCameraBase64},{distance}";
-        return data;
-    }
     void FixedUpdate()
     {
-        if (!remoteControl)
-        {
-            ControllerControl();
-        }
+        ControllerControl();
     }
 }
-
-
-
