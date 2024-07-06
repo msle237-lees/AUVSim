@@ -1,15 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
-using System.Threading;
-using System.Net.Sockets;
-using System.Net;
-using System.Text;
-using UnityEngine.Pool;
 using System.IO;
 
 public class main_script : MonoBehaviour
