@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using UnityEngine.Pool;
+using System.IO;
 
 public class main_script : MonoBehaviour
 {
@@ -75,6 +76,9 @@ public class main_script : MonoBehaviour
     // Qualifications position
     private Vector3 qualificationsPosition = new Vector3(353.6f, 25.0f, 545.2f);
 
+    private string screenshotDirectory = "Screenshots";
+    private int screenshotCount = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -124,6 +128,11 @@ public class main_script : MonoBehaviour
         startButton.gameObject.SetActive(false);
         prequalsCheckbox.gameObject.SetActive(false);
         manualCheckbox.gameObject.SetActive(false);
+
+        if (!Directory.Exists(screenshotDirectory))
+        {
+            Directory.CreateDirectory(screenshotDirectory);
+        }
     }
 
     // Update is called once per frame
@@ -377,6 +386,13 @@ public class main_script : MonoBehaviour
                 lastSwitchTime = Time.time;
             }
         }
+        if (Time.time - lastSwitchTime > debounceTime)
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                CaptureScreenshot();
+            }
+        }
 
         // Debug
         // Debug.Log($"X: {X} Y: {Y} Z: {Z} Rz: {Rz} Torp1: {torp1} Torp2: {torp2} Claw: {claw} CameraIndex: {cameraIndex}");
@@ -480,5 +496,19 @@ public class main_script : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+    }
+    private void CaptureScreenshot()
+    {
+        // Create a filename based on the current count
+        string screenshotFilename = Path.Combine(screenshotDirectory, "Screenshot_" + screenshotCount + ".png");
+
+        // Capture the screenshot
+        ScreenCapture.CaptureScreenshot(screenshotFilename);
+
+        // Log the screenshot capture
+        Debug.Log("Screenshot captured: " + screenshotFilename);
+
+        // Increment the screenshot count
+        screenshotCount++;
     }
 }
