@@ -106,7 +106,7 @@ public class handleMovement : MonoBehaviour
         form.AddField("Depth", depth.ToString());
 
         // Upload to the server
-        using (UnityWebRequest www = UnityWebRequest.Post("http://yourserver.com/uploadData", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:5000/uploadData", form))
         {
             yield return www.SendWebRequest();
 

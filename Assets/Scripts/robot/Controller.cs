@@ -239,6 +239,12 @@ public class Controller : MonoBehaviour
     }
     void FixedUpdate()
     {
-        ControllerControl();
+        // if (Starter.manualControl)
+        // {
+        //     ControllerControl();
+        // }
+        // else {
+        //     // Do Nothing
+        // }
     }
 }
