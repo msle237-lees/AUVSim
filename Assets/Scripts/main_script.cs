@@ -156,7 +156,7 @@ public class main_script : MonoBehaviour
             //     // Fire torpedo 2
             // }
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -273,31 +273,121 @@ public class main_script : MonoBehaviour
     void ControllerControl()
     {
         // Controller inputs
-        float LY = controllerMapping.LY.Newaction.ReadValue<float>();
-        float LX = controllerMapping.LX.Newaction.ReadValue<float>();
-        float RX = controllerMapping.RX.Newaction1.ReadValue<float>();
-        float RY = controllerMapping.RY.Newaction.ReadValue<float>();
-        float RT = controllerMapping.TriggerR.Newaction.ReadValue<float>();
-        float LT = controllerMapping.TriggerL.Newaction.ReadValue<float>();
-        bool A = controllerMapping.A.Newaction.ReadValue<float>() > 0;
-        bool B = controllerMapping.B.Newaction.ReadValue<float>() > 0;
-        bool Xb = controllerMapping.X.Newaction.ReadValue<float>() > 0;
-        bool Yb = controllerMapping.Y.Newaction.ReadValue<float>() > 0;
-        bool DPadUp = controllerMapping.DPadU.Newaction.ReadValue<float>() > 0;
-        bool DPadDown = controllerMapping.DPadD.Newaction.ReadValue<float>() > 0;
-        bool DPadLeft = controllerMapping.DPadL.Newaction.ReadValue<float>() > 0;
-        bool DPadRight = controllerMapping.DPadR.Newaction.ReadValue<float>() > 0;
+        // float LY = controllerMapping.LY.Newaction.ReadValue<float>();
+        // float LX = controllerMapping.LX.Newaction.ReadValue<float>();
+        // float RX = controllerMapping.RX.Newaction1.ReadValue<float>();
+        // float RY = controllerMapping.RY.Newaction.ReadValue<float>();
+        // float RT = controllerMapping.TriggerR.Newaction.ReadValue<float>();
+        // float LT = controllerMapping.TriggerL.Newaction.ReadValue<float>();
+        // bool A = controllerMapping.A.Newaction.ReadValue<float>() > 0;
+        // bool B = controllerMapping.B.Newaction.ReadValue<float>() > 0;
+        // bool Xb = controllerMapping.X.Newaction.ReadValue<float>() > 0;
+        // bool Yb = controllerMapping.Y.Newaction.ReadValue<float>() > 0;
+        // bool DPadUp = controllerMapping.DPadU.Newaction.ReadValue<float>() > 0;
+        // bool DPadDown = controllerMapping.DPadD.Newaction.ReadValue<float>() > 0;
+        // bool DPadLeft = controllerMapping.DPadL.Newaction.ReadValue<float>() > 0;
+        // bool DPadRight = controllerMapping.DPadR.Newaction.ReadValue<float>() > 0;
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            X = -1.0f;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            X = 1.0f;
+        }
+        else
+        {
+            X = 0.0f;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            Z = 1.0f;
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            Z = -1.0f;
+        }
+        else
+        {
+            Z = 0.0f;
+        }
+        if (Input.GetKey(KeyCode.Z))
+        {
+            Y = -1.0f;
+        }
+        else if (Input.GetKey(KeyCode.C))
+        {
+            Y = 1.0f;
+        }
+        else
+        {
+            Y = 0.0f;
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            Rz = 1.0f;
+        }
+        else if (Input.GetKey(KeyCode.E))
+        {
+            Rz = -1.0f;
+        }
+        else
+        {
+           Rz = 0.0f;
+        }
+        if (Input.GetKey(KeyCode.R))
+        {
+            torp1 = true;
+        }
+        else
+        {
+            torp1 = false;
+        }
+        if (Input.GetKey(KeyCode.F))
+        {
+            torp2 = true;
+        }
+        else
+        {
+            torp2 = false;
+        }
+        if (Input.GetKey(KeyCode.V))
+        {
+            claw = 1.0f;
+        }
+        else if (Input.GetKey(KeyCode.X))
+        {
+            claw = -1.0f;
+        }
+        else
+        {
+            claw = 0.0f;
+        }
+        if (Time.time - lastSwitchTime > debounceTime)
+        {
+            if (Input.GetKey(KeyCode.T))
+            {
+                cameraIndex += 1;
+                lastSwitchTime = Time.time;
+            }
+            else if (Input.GetKey(KeyCode.G))
+            {
+                cameraIndex -= 1;
+                lastSwitchTime = Time.time;
+            }
+        }
 
         // Debug
-        Debug.Log($"LY: {LY} LX: {LX} RX: {RX} RY: {RY} RT: {RT} LT: {LT} A: {A} B: {B} X: {Xb} Y: {Yb} DPadUp: {DPadUp} DPadDown: {DPadDown}");
+        // Debug.Log($"X: {X} Y: {Y} Z: {Z} Rz: {Rz} Torp1: {torp1} Torp2: {torp2} Claw: {claw} CameraIndex: {cameraIndex}");
 
-        // Adjusted movement inputs
-        X = -LY;
-        Y = -LX;
-        Z = RY;
-        Rz = -RX;
-        torp1 = RT > 0.0f;
-        torp2 = LT > 0.0f;
+        // // Adjusted movement inputs
+        // X = -LY;
+        // Y = -LX;
+        // Z = RY;
+        // Rz = -RX;
+        // torp1 = RT > 0.0f;
+        // torp2 = LT > 0.0f;
 
         // Mapping input values to a specific range for movement
         float min_out = -10.0f;
@@ -318,13 +408,13 @@ public class main_script : MonoBehaviour
         Rz = -Rz; // Invert Rz
 
         // Add a ceiling to the Y axis based on player location
-        if (rb.transform.position.y > 10.0f)
+        if (rb.transform.position.y > 30.0f)
         {
-            Z = Mathf.Min(Z, 0.0f);
+            Y = Mathf.Min(Y, 0.0f);
         }
 
         // Direction and magnitude of force to apply, in local space
-        Vector3 forceDirection = new Vector3(X, Z, Y);
+        Vector3 forceDirection = new Vector3(X, Y, Z);
         Vector3 torqueDirection = new Vector3(0, Rz, 0); // Adjust for local space orientation
 
         // Convert forceDirection and torqueDirection to be relative to the rigidbody's orientation
@@ -338,19 +428,7 @@ public class main_script : MonoBehaviour
         // Debug output
         // Debug.Log($"X: {X} Y: {Y} Z: {Z} Roll: {Roll} Pitch: {Pitch} Rz: {Rz} Torp1: {Torp1} Torp2: {Torp2} A: {A} B: {B} X: {Xb} Y: {Yb} DPadUp: {DPadUp} DPadDown: {DPadDown} localForce: {localForce} localTorque: {localTorque} cameraIndex: {cameraIndex}");
 
-        if (Time.time - lastSwitchTime > debounceTime)
-        {
-            if (DPadUp)
-            {
-                cameraIndex += 1;
-                lastSwitchTime = Time.time;
-            }
-            else if (DPadDown)
-            {
-                cameraIndex -= 1;
-                lastSwitchTime = Time.time;
-            }
-        }
+        
         if (cameraIndex < 0)
         {
             cameraIndex = 0;
@@ -386,13 +464,6 @@ public class main_script : MonoBehaviour
             frontLeftCamera.enabled = false;
             bottomCamera.enabled = true;
             sceneCamera.enabled = false;
-        }
-        if (Time.time - lastSwitchTime > debounceTime)
-        {
-            if (Yb)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
         }
     }
     public int Map(float x, float in_min, float in_max, float out_min, float out_max)
