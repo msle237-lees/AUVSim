@@ -1,0 +1,65 @@
+#
+# Bunkspeed OBJ Material File
+# http://www.bunkspeed.com
+#
+
+newmtl white_medium_gloss_plastic
+Kd 1 1 1
+Ks 0.5 0.5 0.5
+illum 2
+Ns 99.90109
+
+newmtl black_medium_gloss_plastic
+Kd 0.09803922 0.09803922 0.09803922
+Ks 0.5 0.5 0.5
+illum 2
+Ns 99.90109
+
+newmtl black_medium_gloss_plastic
+Kd 0.09803922 0.09803922 0.09803922
+Ks 0.5 0.5 0.5
+illum 2
+Ns 99.90109
+
+newmtl black_medium_gloss_plastic
+Kd 0.09803922 0.09803922 0.09803922
+Ks 0.5 0.5 0.5
+illum 2
+Ns 99.90109
+
+newmtl black_medium_gloss_plastic
+Kd 0.09803922 0.09803922 0.09803922
+Ks 0.5 0.5 0.5
+illum 2
+Ns 99.90109
+
+newmtl white_medium_gloss_plastic
+Kd 1 1 1
+Ks 0.5 0.5 0.5
+illum 2
+Ns 99.90109
+
+newmtl white_medium_gloss_plastic
+Kd 1 1 1
+Ks 0.5 0.5 0.5
+illum 2
+Ns 99.90109
+
+newmtl white_medium_gloss_plastic
+Kd 1 1 1
+Ks 0.5 0.5 0.5
+illum 2
+Ns 99.90109
+
+newmtl red
+Kd 1 0.1686275 0.1686275
+Ks 0.5 0.5 0.5
+illum 2
+
+newmtl large_spark_erosion_plastic_blue
+Kd 0.1372549 0.2941177 0.7490196
+Ks 0.5 0.5 0.5
+map_bump -bm 2 C:\Users\Shadow\Documents\AUV\Software\AUVSim\Assets\Prefabs\Bins\edm_spark_n.dds
+bump C:\Users\Shadow\Documents\AUV\Software\AUVSim\Assets\Prefabs\Bins\edm_spark_n.dds
+illum 2
+Ns 2.798161

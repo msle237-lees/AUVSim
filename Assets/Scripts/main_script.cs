@@ -178,11 +178,9 @@ public class main_script : MonoBehaviour
         return distance;
     }
 
-    float[] getTemperature()
+    float getTemperature()
     {
-        float[] temperature = new float[2];
-        temperature[0] = 0.0f; // Temperature of the Sub
-        temperature[1] = 0.0f; // Temperature of the Water
+        float temperature = 0.0f;
         return temperature;
     }
 
@@ -382,7 +380,7 @@ public class main_script : MonoBehaviour
         }
         if (Time.time - lastSwitchTime > debounceTime)
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(KeyCode.Y))
             {
                 CaptureScreenshot();
             }
